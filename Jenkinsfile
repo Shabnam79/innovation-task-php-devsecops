@@ -11,12 +11,10 @@ pipeline {
        stage('PHPCS') {
             steps {
                 catchError(buildResult: 'Success', stageResult: 'Success') {
-                sh '''
-                phpcs .
-                phpcs --standard=PSR2 --extensions=php --report=summary --report-file=/home/testing/phpcs-output-new innovation-task-php-devsecops '''
+                sh 'phpcs ${WORKSPACE} --generator=HTML > report.html'
+             }
             }
-        }
-       }
+            }
         stage('Build') {
             steps {
                 sh "docker-compose up -d --build"
